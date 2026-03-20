@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday My Love</title>
+    <style>
+        :root {
+            --gold: #FFD700;
+            --soft-pink: #ffafbd;
+            --deep-pink: #ee9ca7;
+            --text-brown: #5d4037;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            /* Animated Background */
+            background: linear-gradient(-45deg, #ffedbc, #ffafbd, #ffc3a0, #ffafbd);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            font-family: 'Georgia', serif;
+            overflow: hidden;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Floating Hearts & Sparkles */
+        .floating-icon {
+            position: absolute;
+            top: -10%;
+            animation: floatDown 6s linear infinite;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        @keyframes floatDown {
+            to { transform: translateY(110vh) rotate(360deg); }
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(15px);
+            padding: 35px;
+            border-radius: 40px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.1);
+            border: 4px solid rgba(255, 255, 255, 0.8);
+            max-width: 420px;
+            width: 85%;
+            text-align: center;
+        }
+
+        .portrait-frame {
+            display: none;
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            border: 6px solid #fff;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            overflow: hidden;
+            animation: zoomIn 1s ease;
+            filter: brightness(1.05) contrast(1.05);
+        }
+
+        .portrait-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top;
+        }
+
+        @keyframes zoomIn {
+            from { transform: scale(0); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        h1 { color: #d81b60; font-size: 2rem; margin-bottom: 5px; }
+        
+        #gift-box {
+            font-size: 100px;
+            cursor: pointer;
+            transition: 0.3s;
+            margin: 30px 0;
+        }
+        #gift-box:hover { transform: scale(1.15) rotate(5deg); }
+
+        .shayari {
+            font-size: 1.2rem;
+            color: #4e342e;
+            font-style: italic;
+            line-height: 1.6;
+            margin: 15px 0;
+            font-weight: bold;
+        }
+
+        #music-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: bold;
+            color: #d81b60;
+        }
+
+        #reveal-area { display: none; }
+
+        .btn-restart {
+            margin-top: 20px;
+            background: #d81b60;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="bg-music" loop>
+        <source src="romantic-music.mp3" type="audio/mpeg">
+    </audio>
+
+    <button id="music-btn" onclick="toggleMusic()">
+        <span id="music-icon">🎵</span> Play Music
+    </button>
+
+    <div class="container">
+        <div id="intro">
+            <h1>Happy Birthday, Beautiful!</h1>
+            <p style="color: #8d6e63;">I have a little surprise for you...</p>
+            <div id="gift-box" onclick="openGift()">🎁</div>
+            <p style="font-size: 0.9rem; color: #d81b60;">Tap the gift box</p>
+        </div>
+
+        <div id="reveal-area">
+            <div class="portrait-frame">
+                <img src="her.png" alt="My Birthday Girl">
+            </div>
+
+            <div class="shayari">
+                "Teri muskurahat mein meri jaan basti hai,<br>
+                Tu peele rang mein bilkul pari jaisi lagti hai."
+            </div>
+
+            <p style="color: #d81b60; font-size: 1.3rem; margin: 0;">❤️ I Love You! ❤️</p>
+            
+            <button class="btn-restart" onclick="location.reload()">See it again</button>
+        </div>
+    </div>
+
+    <script>
+        // Floating Background Elements
+        function spawnIcon() {
+            const icon = document.createElement('div');
+            icon.classList.add('floating-icon');
+            const types = ['❤️', '✨', '💛', '🌸', '🎈'];
+            icon.innerHTML = types[Math.floor(Math.random() * types.length)];
+            icon.style.left = Math.random() * 100 + 'vw';
+            icon.style.animationDuration = (Math.random() * 3 + 4) + 's';
+            icon.style.fontSize = (Math.random() * 10 + 20) + 'px';
+            document.body.appendChild(icon);
+            setTimeout(() => icon.remove(), 6000);
+        }
+        setInterval(spawnIcon, 400);
+
+        // Music Control
+        const music = document.getElementById('bg-music');
+        const mBtn = document.getElementById('music-btn');
+        function toggleMusic() {
+            if (music.paused) {
+                music.play();
+                mBtn.innerHTML = '<span>⏸️</span> Pause Music';
+            } else {
+                music.pause();
+                mBtn.innerHTML = '<span>🎵</span> Play Music';
+            }
+        }
+
+        // Open Gift Logic
+        function openGift() {
+            document.getElementById('intro').style.display = 'none';
+            document.getElementById('reveal-area').style.display = 'block';
+            document.querySelector('.portrait-frame').style.display = 'block';
+            
+            // Auto-play music when she opens the gift (works on some browsers after a click)
+            music.play();
+            mBtn.innerHTML = '<span>⏸️</span> Pause Music';
+
+            // Extra heart burst
+            for(let i=0; i<30; i++) {
+                setTimeout(spawnIcon, i * 50);
+            }
+        }
+    </script>
+</body>
+</html>
